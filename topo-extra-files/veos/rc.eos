@@ -1,0 +1,13 @@
+#!/bin/bash
+
+logger MK~ Starting rc.eos run
+
+mkdir /tmp/cdrom 
+sudo mount -t iso9660 /dev/cdrom /tmp/cdrom/
+if [ -f /tmp/cdrom/config ]; then
+  cp /tmp/cdrom/config /mnt/flash/startup-config
+fi
+
+sudo umount /tmp/cdrom
+
+logger MK~ rc.eos run finished
