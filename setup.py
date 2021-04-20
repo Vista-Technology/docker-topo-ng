@@ -19,9 +19,9 @@ setup(
     data_files=collect_files(),
     python_requires=">=3.5",
     install_requires=["pyyaml", "docker", "netaddr", "packaging"] + (["pyroute2==0.5.3"] if 'linux' in sys.platform.lower() else []),
-    url="https://github.com/andreavivaldi/docker-topo",
+    url="https://github.com/Vista-Technology/docker-topo-ng",
     license="BSD3",
     author="Andrea Vivaldi",
-    author_email="andrea.vivaldi@gmail.com",
-    description="Docker network topology builder",
+    author_email="andrea.vivaldi@vistatech.it",
+    description="Docker network topology builder (Next Generation)",
 )
