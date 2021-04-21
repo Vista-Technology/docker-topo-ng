@@ -178,8 +178,9 @@ def parse_endpoints(devices, endpoints, link, idx):
             device = devices.get(device_name, Host(device_name))
             if len(ep) > 1:
                 # This means we have intf name _AND_ IP address
+                route = ep.pop()
                 ip = ep.pop()
-                device.add_ip(ip, ep[0])            
+                device.add_ip(ip, ep[0], route)            
         else:
             # This creates default CEOS device type
             device = devices.get(device_name, CEOS(device_name))
@@ -441,10 +442,10 @@ class Host(Device):
         prefix = netaddr.IPNetwork(ip)
         return prefix.prefixlen < 32
 
-    def add_ip(self, ip, intf):
+    def add_ip(self, ip, intf, route):
         LOG.debug("Adding IP address command line argument for IP {}".format(ip))
         if self._verify_addr(ip):
-            self.command.append(':'.join([intf, ip]))
+            self.command.append(':'.join([intf, ip, route]))
 
     def start(self, *args, **kwargs):
         super().start(*args, **kwargs)
