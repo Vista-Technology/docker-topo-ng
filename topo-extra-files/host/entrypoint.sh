@@ -91,7 +91,11 @@ for arg in \$args; do
   eval gw=\`echo \$ip | cut -d'.' -f1-3\`
   cmd1="sudo ip addr flush dev \$int"
   cmd2="sudo ip addr add \$ip dev \$int"
-  cmd3="sudo ip route add \$netw via \$gw.1"
+  if [ -z "\$netw" ] then
+    cmd3="sudo ip route add default via \$gw.1"
+  else
+    cmd3="sudo ip route add \$netw via \$gw.1"
+  fi
   echo \$cmd1
   echo \$cmd2
   echo \$cmd3
