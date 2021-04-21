@@ -218,6 +218,7 @@ def parse_v2(t_yml):
         # Link-specific driver takes priority over topology-specific 
         link_driver = link_dsc.get('driver', t_yml.get('driver', None))
         driver_opts = link_dsc.get('driver_opts', None)
+        link_internal = link_dsc.get('internal', False)
         link_endpoints = link_dsc.get('endpoints', None)
         if not link_endpoints:
             LOG.error("Missing endpoints definition")
@@ -229,7 +230,7 @@ def parse_v2(t_yml):
         else:
             # Example: link_dsc == ["Device-A:Interface-1", "cvp-1", "host-1"]
             link_type = 'mpoint'
-        link = Link(link_type, 'net-{}'.format(idx), link_driver, driver_opts)
+        link = Link(link_type, 'net-{}'.format(idx), link_driver, driver_opts, link_internal)
         links.append(link)
         parse_endpoints(devices, link_endpoints, link, idx)
     return devices, links
@@ -581,11 +582,12 @@ class Veth(object):
  
 
 class Link(object):
-    def __init__(self, link_type, name, link_driver=None, driver_opts=None):
+    def __init__(self, link_type, name, link_driver=None, driver_opts=None, link_internal=False):
         LOG.debug('\tConstructing a {} link with name {}'.format(link_type, name))
         self.name = '_'.join([PREFIX, name])
         self.link_type = link_type
         self.network = None
+        self.internal = link_internal
         self.opts = driver_opts if driver_opts else {}
 
         if link_driver:
@@ -615,6 +617,7 @@ class Link(object):
                 self.name,
                 driver=self.driver,
                 labels={PREFIX: self.name},
+                internal=self.internal,
                 options=self.opts
             )
 
