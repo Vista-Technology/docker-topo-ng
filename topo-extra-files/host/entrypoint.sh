@@ -87,16 +87,20 @@ args="$@"
 for arg in \$args; do
   eval ip=\`echo \$arg | cut -d':' -f2\`
   eval int=\`echo \$arg | cut -d':' -f1\`
+  eval netw=\`echo \$arg | cut -d':' -f3\`
   eval gw=\`echo \$ip | cut -d'.' -f1-3\`
-  cmd1="sudo ip addr flush dev \$int"
-  cmd2="sudo ip addr add \$ip dev \$int"
-  cmd3="sudo ip route add 192.168.0.0/16 via \$gw.1"
-  echo \$cmd1
-  echo \$cmd2
-  echo \$cmd3
-  eval \$cmd1
-  eval \$cmd2
-  eval \$cmd3
+  sudo ip addr flush dev \$int
+  sudo ip addr add \$ip dev \$int
+  if [ -z "\$netw" ] 
+  then
+    sudo ip route add default via \$gw.1
+  else
+    n=\$(echo \$netw | tr "," "\n")
+    for i in \$n
+    do
+      sudo ip route add \$i via \$gw.1
+    done
+  fi
 done
 EOT
 

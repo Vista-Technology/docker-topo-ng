@@ -1,0 +1,13 @@
+driver: veth
+PREFIX: lab
+CONF_DIR: ./configs
+CEOS_IMAGE: ceos:4.25.1F
+links:
+  - endpoints:
+     - Leaf-1:eth0
+     - Leaf-2:eth0
+     - Spine-1:eth0
+    driver: bridge
+    internal: True
+  - endpoints: ["Leaf-1:eth1", "Spine-1:eth1"]
+  - endpoints: ["Leaf-2:eth1", "Spine-1:eth2"]

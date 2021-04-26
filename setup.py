@@ -14,7 +14,7 @@ def collect_files():
 
 setup(
     name="docker-topo-ng",
-    version="1.0.0",
+    version="1.0.0-rc0",
     scripts=["bin/docker-topo"],
     data_files=collect_files(),
     python_requires=">=3.5",
