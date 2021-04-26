@@ -1,4 +1,3 @@
-VERSION: 2
 driver: veth
 PREFIX: lab
 CONF_DIR: ./configs
